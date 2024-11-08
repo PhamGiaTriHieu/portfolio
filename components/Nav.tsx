@@ -8,7 +8,7 @@ const Nav = () => {
   const pathname = usePathname();
   return (
     <nav className="flex gap-8">
-      {links?.length ? (
+      {links?.length &&
         links.map((link, index) => {
           return (
             <Link
@@ -21,10 +21,7 @@ const Nav = () => {
               {link.name}
             </Link>
           );
-        })
-      ) : (
-        <div>NOOOOO</div>
-      )}
+        })}
     </nav>
   );
 };

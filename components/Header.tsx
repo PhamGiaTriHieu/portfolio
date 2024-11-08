@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import Nav from '@/components/ui/Nav';
+import Nav from '@/components/Nav';
 import {Button} from '@/components/ui/button';
+import MobileNav from '@/components/MobileNav';
 
 const Header = () => {
   return (
@@ -10,7 +11,7 @@ const Header = () => {
         {/* Logo */}
         <Link href="/">
           <h1 className="text-4xl font-semibold">
-            Luke<span className="text-accent">.</span>
+            Hieu<span className="text-accent">.</span>
           </h1>
         </Link>
         {/* Desktop Nav  and hire me button*/}
@@ -21,7 +22,9 @@ const Header = () => {
           </Link>
         </div>
         {/* Mobile Nav*/}
-        <div className="xl:hidden">Mobile Nav</div>
+        <div className="xl:hidden">
+          <MobileNav />
+        </div>
       </div>
     </header>
   );
