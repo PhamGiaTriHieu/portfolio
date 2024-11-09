@@ -7,9 +7,9 @@ body {
 } */
 
 @layer base {
-  /* :root {
+  :root {
     --radius: 0.5rem;
-  } */
+  }
 
   body {
     @apply font-primary bg-primary text-white leading-loose
@@ -25,5 +25,13 @@ body {
 
   h3 {
     @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px #fff
+  }
+
+  .text-outline-hover {
+    -webkit-text-stroke: 1px #00ff99
   }
 }
