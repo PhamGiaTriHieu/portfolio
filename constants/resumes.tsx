@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import {BiLogoTypescript} from 'react-icons/bi';
 import {SiTailwindcss, SiNextdotjs, SiNestjs} from 'react-icons/si';
+import {ReactNode} from 'react';
 
 interface IItemExperiences {
   company: string;
@@ -17,7 +18,7 @@ interface IItemExperiences {
   duration: string;
 }
 interface IExperiences {
-  icon: any;
+  icon: unknown;
   title: string;
   description: string;
   items: IItemExperiences[];
@@ -50,7 +51,7 @@ export const about: IAbout = {
     },
     {
       fileName: 'Experiences',
-      fileValue: '2 years working in Web Development',
+      fileValue: '2 Years working in Web Development',
     },
     {
       fileName: 'Email',
@@ -89,7 +90,7 @@ interface IItemEducation {
 }
 
 interface IEducation {
-  icon: any;
+  icon: unknown;
   title: string;
   description: string;
   items: IItemEducation[];
@@ -120,7 +121,7 @@ export const educations: IEducation = {
 };
 
 interface IItemSkills {
-  icon: any;
+  icon: ReactNode;
   name: string;
 }
 interface ISkills {

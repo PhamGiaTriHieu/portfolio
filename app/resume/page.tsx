@@ -1,15 +1,15 @@
 'use client';
-import {
-  FaHtml5,
-  FaCss3,
-  FaJs,
-  FaReact,
-  FaFigma,
-  FaNodeJs,
-  FaGit,
-} from 'react-icons/fa';
-import {BiLogoTypescript} from 'react-icons/bi';
-import {SiTailwindcss, SiNextdotjs, SiNestjs} from 'react-icons/si';
+// import {
+//   FaHtml5,
+//   FaCss3,
+//   FaJs,
+//   FaReact,
+//   FaFigma,
+//   FaNodeJs,
+//   FaGit,
+// } from 'react-icons/fa';
+// import {BiLogoTypescript} from 'react-icons/bi';
+// import {SiTailwindcss, SiNextdotjs, SiNestjs} from 'react-icons/si';
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {
@@ -151,15 +151,17 @@ const Services = () => {
                 <p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">
                   {about.description}
                 </p>
-                <ul className="grid grid-cols-1 xl:grid-cols-2 gap-y-6 max-w-[620px] mx-auto xl:mx-0">
+                <ul className="grid grid-cols-1  gap-6 max-w-[620px] mx-auto xl:mx-0">
                   {about.info.map((item, index) => {
                     return (
                       <li
                         key={index}
                         className="flex items-center justify-center xl:justify-start gap-4"
                       >
-                        <span className="text-white/60">{item.fileName}</span>
-                        <span className="text-xl">{item.fileValue}</span>
+                        <span className="text-white/60">{item.fileName}:</span>
+                        <div className="flex flex-wrap max-w-[200px] xl:max-w-none">
+                          <span className="text-lg">{item.fileValue}</span>
+                        </div>
                       </li>
                     );
                   })}
