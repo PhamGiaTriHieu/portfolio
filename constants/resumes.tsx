@@ -38,7 +38,7 @@ interface IAbout {
 export const about: IAbout = {
   title: 'About Me',
   description:
-    ' Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod voluptatum doloribus odio.',
+    'I am a passionate Web and Mobile Developer. With a strong foundation in both front-end and a little bit of back-end technologies. I’m always eager to learn new tools and technologies to improve my skills and stay up-to-date with industry trends. My goal is to deliver seamless web experiences that are both functional and enjoyable to use.',
 
   info: [
     {
@@ -68,7 +68,7 @@ export const experiences: IExperiences = {
   icon: BadgeIcon,
   title: 'My experience',
   description:
-    ' Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod voluptatum doloribus odio.',
+    'I have developed my skills as a software developer over the past 2 years, working on various projects that enhanced my expertise in multiple technologies and methodologies.',
   items: [
     {
       company: 'Cherry Solutions',
@@ -100,7 +100,7 @@ export const educations: IEducation = {
   icon: BadgeIcon,
   title: 'My education',
   description:
-    ' Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod voluptatum doloribus odio.',
+    'Below is my educational background related to the web development field:',
   items: [
     {
       institution: 'KITS (Korea IT school)',
@@ -133,7 +133,7 @@ interface ISkills {
 export const skills: ISkills = {
   title: 'My skills',
   description:
-    ' Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod voluptatum doloribus odio.',
+    'Below are the skills and programming languages I have learned and used in my projects:',
   skillLists: [
     {
       icon: <FaHtml5 />,

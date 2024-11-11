@@ -15,11 +15,13 @@ const Home = () => {
           <div className="text-center xl:text-left order-2 xl:order-none">
             <span className="text-xl">Software Developer</span>
             <h1 className="h1 mb-6">
-              Hello I'm <br />{' '}
+              Hello I’m <br />
               <span className="text-accent">Pham Gia Tri Hieu</span>
             </h1>
             <p className="max-w-[500px] mb-9 text-white/80">
-              I'm proficient in various programming languages and technologies
+              I am passionate about coding — I could skip meals, but I can’t
+              skip a day of writing code. Every day brings new lessons and
+              discoveries, fueling my drive to learn and create.
             </p>
             {/* Button and media Socials  */}
             <div className="flex flex-col xl:flex-row items-center gap-8">
