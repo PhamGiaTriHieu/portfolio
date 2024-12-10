@@ -12,7 +12,6 @@ import {motion} from 'framer-motion';
 import {IAbout, icons} from '@/constants/resumes';
 import {useEffect, useState} from 'react';
 import {
-  IAboutMe,
   IEducations,
   IExperiences,
   ISkills,
@@ -59,7 +58,7 @@ const Services = () => {
       if (aboutMe) return;
       fetchAboutMe();
     }
-  }, [selectedTab]);
+  }, [selectedTab, experiences, edu, skills, aboutMe]);
 
   const fetchExperiences = async () => {
     try {
