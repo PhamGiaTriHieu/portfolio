@@ -17,8 +17,8 @@ export const links: ILinks[] = [
     path: '/resume',
   },
   {
-    name: 'work',
-    path: '/work',
+    name: 'projects',
+    path: '/projects',
   },
   {
     name: 'contact',

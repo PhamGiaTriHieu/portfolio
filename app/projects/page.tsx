@@ -1,8 +1,7 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import {Swiper, SwiperSlide, SwiperClass} from 'swiper/react';
-
 import 'swiper/css';
 
 import {BsArrowUpRight, BsGithub} from 'react-icons/bs';
@@ -15,15 +14,42 @@ import {
 
 import Link from 'next/link';
 import Image from 'next/image';
-import {IWork, works} from '@/constants/works';
+import {projectImgList} from '@/constants/works';
 import WorkSliderButtons from '@/components/WorkSliderButtons';
+import {getProjects} from '@/hooks/projectPage/projectApisHook';
+import {IProject} from '@/interfaces/project/project.interface';
 
-const Work = () => {
-  const [project, setProject] = useState<IWork>(works[0]);
+const Project = () => {
+  const [projectsList, setProjectsList] = useState<IProject[]>([]);
+  const [project, setProject] = useState<IProject>();
+
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
+  const fetchProject = async () => {
+    try {
+      const response = await getProjects('portfolios/resume/projects');
+      setProject(response.projects[0]); // Set the first project as default when the page loads.
+
+      const formattedProjects = response.projects.map((project) => {
+        return {
+          ...project,
+          image: projectImgList[project.num - 1],
+        };
+      });
+
+      setProjectsList(formattedProjects);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!projectsList.length) return <div>Loading...</div>;
 
   const handleSlideChange = (swiper: SwiperClass) => {
     const currentSlideIndex = swiper.activeIndex;
-    setProject(works[currentSlideIndex]);
+    setProject(projectsList[currentSlideIndex]);
   };
   return (
     <motion.div
@@ -41,24 +67,25 @@ const Work = () => {
             <div className="flex flex-col gap-[30px] h-[50%]">
               {/* outline num */}
               <div className="text-8xl leading-none font-extrabold text-transparent text-outline">
-                {project.num}
+                {project &&
+                  `${project?.num < 10 ? '0' + project?.num : project?.num}`}
               </div>
 
               {/* project category */}
               <h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
-                {project.category} project
+                {project?.category} project
               </h2>
 
               {/* project description */}
-              <p className="text-white/60">{project.description}</p>
+              <p className="text-white/60">{project?.description}</p>
 
               {/* stack */}
               <ul className="flex gap-4">
-                {project.stack.map((item, index) => {
+                {project?.stacks.map((item, index) => {
                   return (
                     <li key={index} className="text-xl text-accent">
-                      {item.name}
-                      {index !== project.stack.length - 1 && ','}
+                      {item}
+                      {index !== project.stacks.length - 1 && ','}
                     </li>
                   );
                 })}
@@ -70,7 +97,7 @@ const Work = () => {
               {/* Buttons */}
               <div className="flex items-center gap-4">
                 {/* Live Project Button */}
-                <Link href={project.live} target="_blank">
+                <Link href={project?.live ?? ''} target="_blank">
                   <TooltipProvider delayDuration={100}>
                     <Tooltip>
                       <TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
@@ -84,7 +111,7 @@ const Work = () => {
                 </Link>
 
                 {/* GitHub Button */}
-                <Link href={project.github} target="_blank">
+                <Link href={project?.github ?? ''} target="_blank">
                   <TooltipProvider delayDuration={100}>
                     <Tooltip>
                       <TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
@@ -108,8 +135,8 @@ const Work = () => {
               onSlideChange={handleSlideChange}
               className="xl:h-[520px] mb-12"
             >
-              {works?.length &&
-                works.map((project, index) => {
+              {projectsList?.length &&
+                projectsList.map((project, index) => {
                   return (
                     <SwiperSlide key={index} className="w-full">
                       <div className="h-[460px] relative group flex justify-center items-center bg-pink-50/20">
@@ -119,7 +146,7 @@ const Work = () => {
                         {/* Image  */}
                         <div className="relative w-full h-full">
                           <Image
-                            src={project.image}
+                            src={project?.image?.src}
                             fill
                             className="object-cover"
                             quality={100}
@@ -144,4 +171,4 @@ const Work = () => {
   );
 };
 
-export default Work;
+export default Project;

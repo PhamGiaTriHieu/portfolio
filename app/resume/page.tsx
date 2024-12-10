@@ -1,15 +1,4 @@
 'use client';
-// import {
-//   FaHtml5,
-//   FaCss3,
-//   FaJs,
-//   FaReact,
-//   FaFigma,
-//   FaNodeJs,
-//   FaGit,
-// } from 'react-icons/fa';
-// import {BiLogoTypescript} from 'react-icons/bi';
-// import {SiTailwindcss, SiNextdotjs, SiNestjs} from 'react-icons/si';
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {
@@ -20,9 +9,142 @@ import {
 } from '@/components/ui/tooltip';
 import {ScrollArea} from '@/components/ui/scroll-area';
 import {motion} from 'framer-motion';
-import {about, educations, experiences, skills} from '@/constants/resumes';
+import {IAbout, icons} from '@/constants/resumes';
+import {useEffect, useState} from 'react';
+import {
+  IAboutMe,
+  IEducations,
+  IExperiences,
+  ISkills,
+} from '@/interfaces/resume/resume.interface';
+import {
+  getAboutMe,
+  getEducation,
+  getExperience,
+  getSkills,
+} from '@/hooks/resumePage/resumeApisHook';
+
+enum EResumeTab {
+  EXPERIENCE = 'experience',
+  EDUCATION = 'education',
+  SKILLS = 'skills',
+  ABOUTME = 'aboutMe',
+}
 
 const Services = () => {
+  const [experiences, setExperiences] = useState<IExperiences>();
+  const [edu, setEdu] = useState<IEducations>();
+  const [skills, setSkills] = useState<ISkills>();
+  const [aboutMe, setAboutMe] = useState<IAbout>();
+
+  const [selectedTab, setSelectedTab] = useState('experience');
+
+  useEffect(() => {
+    if (selectedTab === EResumeTab.EXPERIENCE) {
+      if (experiences) return;
+      fetchExperiences();
+    }
+
+    if (selectedTab === EResumeTab.EDUCATION) {
+      if (edu) return;
+      fetchEducation();
+    }
+
+    if (selectedTab === EResumeTab.SKILLS) {
+      if (skills) return;
+      fetchSkills();
+    }
+
+    if (selectedTab === EResumeTab.ABOUTME) {
+      if (aboutMe) return;
+      fetchAboutMe();
+    }
+  }, [selectedTab]);
+
+  const fetchExperiences = async () => {
+    try {
+      const response = await getExperience('portfolios/resume/experiences');
+      setExperiences(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchEducation = async () => {
+    try {
+      const response = await getEducation('portfolios/resume/education');
+      setEdu(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSkills = async () => {
+    try {
+      const response = await getSkills('portfolios/resume/skills');
+      const mapSkillsToIcons = (skills: {name: string}[]) => {
+        return skills.map((skill) => {
+          const IconComponent = icons[skill.name as keyof typeof icons];
+          return {
+            name: skill.name,
+            icon: IconComponent ? <IconComponent /> : null,
+          };
+        });
+      };
+
+      const skillLists = mapSkillsToIcons(response.skills);
+      const formattedData = {...response, skillLists};
+
+      setSkills(formattedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAboutMe = async () => {
+    try {
+      const response = await getAboutMe('portfolios/resume/about-me');
+
+      const info = [
+        {
+          fileName: 'FullName',
+          fileValue: response.fullName,
+        },
+        {
+          fileName: 'Phone',
+          fileValue: `(+84) ${response.phoneNumber.slice(1)}`,
+        },
+        {
+          fileName: 'Experiences',
+          fileValue: `${response.experience} Years working in Web Development`,
+        },
+        {
+          fileName: 'Email',
+          fileValue: response.email,
+        },
+        {
+          fileName: 'Address',
+          fileValue: response.address,
+        },
+      ];
+
+      const formattedAboutMe = {
+        description: response.aboutMe,
+        info,
+      };
+
+      setAboutMe(formattedAboutMe);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClickTab = (value: string) => {
+    setSelectedTab(value);
+  };
+
+  if (!experiences) return null;
+
   return (
     <motion.div
       initial={{opacity: 0}}
@@ -34,27 +156,28 @@ const Services = () => {
     >
       <div className="container mx-auto">
         <Tabs
-          defaultValue="experience"
+          defaultValue={EResumeTab.EXPERIENCE}
           className="flex flex-col xl:flex-row gap-[60px]"
+          onValueChange={(value) => handleClickTab(value)}
         >
           <TabsList className="flex flex-col w-full max-w-[380px] mx-auto xl:mx-0 gap-6">
-            <TabsTrigger value="experience">Experience</TabsTrigger>
-            <TabsTrigger value="education">Education</TabsTrigger>
-            <TabsTrigger value="skills">Skills</TabsTrigger>
-            <TabsTrigger value="about">About Me</TabsTrigger>
+            <TabsTrigger value={EResumeTab.EXPERIENCE}>Experience</TabsTrigger>
+            <TabsTrigger value={EResumeTab.EDUCATION}>Education</TabsTrigger>
+            <TabsTrigger value={EResumeTab.SKILLS}>Skills</TabsTrigger>
+            <TabsTrigger value={EResumeTab.ABOUTME}>About Me</TabsTrigger>
           </TabsList>
           {/* Content */}
           <div className="min-h-[70vh] w-full">
             {/* Experience */}
-            <TabsContent value="experience" className="w-full">
+            <TabsContent value={EResumeTab.EXPERIENCE} className="w-full">
               <div className="flex flex-col gap-[30px] text-center xl:text-left">
-                <h3 className="text-4xl font-bold">{experiences.title}</h3>
+                <h3 className="text-4xl font-bold">My experience</h3>
                 <p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">
-                  {experiences.description}
+                  {experiences?.description}
                 </p>
                 <ScrollArea className="h-[400px]">
                   <ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-                    {experiences.items.map((item, index) => {
+                    {experiences?.workExperiences.map((item, index) => {
                       return (
                         <li
                           key={index}
@@ -78,15 +201,15 @@ const Services = () => {
             </TabsContent>
 
             {/* education */}
-            <TabsContent value="education" className="w-full">
+            <TabsContent value={EResumeTab.EDUCATION} className="w-full">
               <div className="flex flex-col gap-[30px] text-center xl:text-left">
-                <h3 className="text-4xl font-bold">{educations.title}</h3>
+                <h3 className="text-4xl font-bold">My education</h3>
                 <p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">
-                  {educations.description}
+                  {edu?.description}
                 </p>
                 <ScrollArea className="h-[400px]">
                   <ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-                    {educations.items.map((item, index) => {
+                    {edu?.educations.map((item, index) => {
                       return (
                         <li
                           key={index}
@@ -97,7 +220,6 @@ const Services = () => {
                             {item.degree}
                           </h3>
                           <div className="flex items-center gap-3">
-                            {/* dot */}
                             <span className="w-[6px] h-[6px] rounded-full bg-accent"></span>
                             <p className="text-white/60">{item.institution}</p>
                           </div>
@@ -110,16 +232,16 @@ const Services = () => {
             </TabsContent>
 
             {/* skills */}
-            <TabsContent value="skills" className="w-full h-full">
+            <TabsContent value={EResumeTab.SKILLS} className="w-full h-full">
               <div className="flex flex-col gap-[30px]">
                 <div className="flex flex-col gap-[30px] text-center xl:text-left">
-                  <h3 className="text-4xl font-bold">{skills.title}</h3>
+                  <h3 className="text-4xl font-bold">My skills</h3>
                   <p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">
-                    {skills.description}
+                    {skills?.description}
                   </p>
                 </div>
                 <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:gap-[30px] gap-4">
-                  {skills.skillLists.map((skill, index) => {
+                  {skills?.skillLists?.map((skill, index) => {
                     return (
                       <li key={index}>
                         <TooltipProvider delayDuration={100}>
@@ -143,22 +265,22 @@ const Services = () => {
 
             {/* about me */}
             <TabsContent
-              value="about"
+              value={EResumeTab.ABOUTME}
               className="w-full text-center xl:text-left"
             >
               <div className="flex flex-col gap-[30px]">
-                <h3 className="text-4xl font-bold">{about.title}</h3>
+                <h3 className="text-4xl font-bold">About Me</h3>
                 <p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">
-                  {about.description}
+                  {aboutMe?.description}
                 </p>
                 <ul className="grid grid-cols-1  gap-6 max-w-[620px] mx-auto xl:mx-0">
-                  {about.info.map((item, index) => {
+                  {aboutMe?.info.map((item, index) => {
                     return (
                       <li
                         key={index}
                         className="flex items-center justify-center xl:justify-start gap-4"
                       >
-                        <span className="text-white/60">{item.fileName}:</span>
+                        <span className="text-white/60">{item?.fileName}:</span>
                         <div className="flex flex-wrap max-w-[200px] xl:max-w-none">
                           <span className="text-lg">{item.fileValue}</span>
                         </div>
