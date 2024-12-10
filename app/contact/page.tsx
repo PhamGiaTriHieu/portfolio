@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {
@@ -12,12 +12,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {Textarea} from '@/components/ui/textarea';
-import {Controller, useForm} from 'react-hook-form';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {FieldErrors} from 'react-hook-form';
 
 import {FaPhoneAlt, FaEnvelope, FaMapMarkedAlt} from 'react-icons/fa';
 import {motion} from 'framer-motion';
 import {toast} from 'react-toastify';
 import {sendMailForWork} from '@/hooks/contact/contactApisHook';
+import {IFormSubmit} from '@/interfaces/contact/contact.interface';
 
 const info = [
   {
@@ -38,16 +40,11 @@ const info = [
 ];
 
 const Contact = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: {errors, isValid},
-    reset,
-  } = useForm();
+  const {handleSubmit, control, reset} = useForm<IFormSubmit>();
 
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<IFormSubmit> = async (data: IFormSubmit) => {
     // alert(JSON.stringify(data));
     const url = 'mail/for-work';
     try {
@@ -62,7 +59,7 @@ const Contact = () => {
     }
   };
 
-  const onerror = (error: any) => {
+  const onerror = (error: FieldErrors<IFormSubmit>) => {
     if (error.firstName) {
       toast.error(error?.lastName?.message);
     }
@@ -136,7 +133,7 @@ const Contact = () => {
                 />
 
                 <Controller
-                  name="phone"
+                  name="phoneNumber"
                   control={control}
                   defaultValue=""
                   render={({field}) => (
