@@ -4,6 +4,8 @@ import Header from '@/components/Header';
 import './globals.css';
 import PageTransition from '@/components/PageTransition';
 import StairTransition from '@/components/StairTransition';
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from 'react-toastify';
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -26,6 +28,7 @@ export default function RootLayout({
       <body className={`${jetbrainsMono.variable} antialiased`}>
         <Header />
         <StairTransition />
+        <ToastContainer />
         <PageTransition>{children}</PageTransition>
       </body>
     </html>

@@ -1,7 +1,14 @@
-import projectImg1 from '@/public/assets/work/thumb1.png';
-import projectImg2 from '@/public/assets/work/thumb2.png';
-import projectImg3 from '@/public/assets/work/thumb3.png';
+import projectImg1 from '@/public/assets/projects/thumb1.png';
+import projectImg2 from '@/public/assets/projects/thumb2.png';
+import projectImg3 from '@/public/assets/projects/thumb3.png';
+import projectImg4 from '@/public/assets/projects/thumb4.png';
 
+export const projectImgList = [
+  projectImg1,
+  projectImg2,
+  projectImg3,
+  projectImg4,
+];
 export interface IStack {
   name: string;
 }

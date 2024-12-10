@@ -7,6 +7,7 @@ import {
   FaFigma,
   FaNodeJs,
   FaGit,
+  FaAws,
 } from 'react-icons/fa';
 import {BiLogoTypescript} from 'react-icons/bi';
 import {SiTailwindcss, SiNextdotjs, SiNestjs} from 'react-icons/si';
@@ -21,7 +22,7 @@ interface IExperiences {
   icon: unknown;
   title: string;
   description: string;
-  items: IItemExperiences[];
+  workExperiences: IItemExperiences[];
 }
 
 interface IInfo {
@@ -29,8 +30,8 @@ interface IInfo {
   fileValue: string;
 }
 
-interface IAbout {
-  title: string;
+export interface IAbout {
+  title?: string;
   description: string;
   info: IInfo[];
 }
@@ -69,7 +70,7 @@ export const experiences: IExperiences = {
   title: 'My experience',
   description:
     'I have developed my skills as a software developer over the past 2 years, working on various projects that enhanced my expertise in multiple technologies and methodologies.',
-  items: [
+  workExperiences: [
     {
       company: 'Cherry Solutions',
       position: 'Software Developer',
@@ -93,15 +94,15 @@ interface IEducation {
   icon: unknown;
   title: string;
   description: string;
-  items: IItemEducation[];
+  educations: IItemEducation[];
 }
 
-export const educations: IEducation = {
+export const educationsData: IEducation = {
   icon: BadgeIcon,
   title: 'My education',
   description:
     'Below is my educational background related to the web development field:',
-  items: [
+  educations: [
     {
       institution: 'KITS (Korea IT school)',
       degree: 'Front-End Web Developer',
@@ -180,4 +181,19 @@ export const skills: ISkills = {
       name: 'Figma',
     },
   ],
+};
+
+export const icons = {
+  HTML5: FaHtml5,
+  CSS3: FaCss3,
+  JavaScript: FaJs,
+  TypeScript: BiLogoTypescript,
+  ReactJS: FaReact,
+  NextJS: SiNextdotjs,
+  NestJS: SiNestjs,
+  NodeJS: FaNodeJs,
+  TailwindCSS: SiTailwindcss,
+  Git: FaGit,
+  AWS: FaAws,
+  Figma: FaFigma,
 };

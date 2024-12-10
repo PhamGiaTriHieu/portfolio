@@ -1,31 +1,89 @@
-import React from 'react';
+'use client';
+import React, {useEffect, useState} from 'react';
 import {Button} from '@/components/ui/button';
 
 import {FiDownload} from 'react-icons/fi';
 import Socials from '@/components/Socials';
 import Photo from '@/components/Photo';
 import Stats from '@/components/Stats';
+import {IHomeGeneral} from '@/interfaces/home/home.interface';
+import {getHomeDetail, getUrlCV} from '@/hooks/homePage/homeApisHook';
+import {downloadFile} from '@/utils/downloadFile';
+import {toast} from 'react-toastify';
 
+// getHomeDetail
 const Home = () => {
+  const [homeDetail, setHomeDetail] = useState<IHomeGeneral>();
+
+  useEffect(() => {
+    fetchHomeDetail();
+  }, []);
+
+  const fetchHomeDetail = async () => {
+    try {
+      const response = await getHomeDetail('portfolios/home/my-portfolio');
+      setHomeDetail(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDownloadLink = async () => {
+    try {
+      const response = await getUrlCV('files/cloudinary/download/cv');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (!homeDetail) return <div>Loading...</div>;
+  const {
+    fullName,
+    description,
+    numberOfCodeCommits,
+    numberOfProjectsCompleted,
+    numberOfTechnologiesUsed,
+    yearOfExperience,
+  } = homeDetail;
+
+  const handleDownloadCV = async () => {
+    // TODO: implement download CV
+    const url = await getDownloadLink();
+    if (!url) {
+      alert('Error: Failed to download CV');
+    }
+    if (url) {
+      await downloadFile(url, `Hieu-Pham-Resume-${Date.now()}.pdf`);
+      toast.success('CV downloaded successfully', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   return (
     <section className="h-full">
       <div className="container mx-auto h-full">
         <div className="flex flex-col xl:flex-row items-center justify-between xl:pt-8 xl:pb-24">
           {/* text */}
           <div className="text-center xl:text-left order-2 xl:order-none">
-            <span className="text-xl">Software Developer</span>
+            {/* <span className="text-xl">Software Developer</span> */}
             <h1 className="h1 mb-6">
               Hello I’m <br />
-              <span className="text-accent">Pham Gia Tri Hieu</span>
+              <span className="text-accent">
+                {fullName ?? 'Phạm Gia Trí Hiếu'}
+              </span>
             </h1>
-            <p className="max-w-[500px] mb-9 text-white/80">
-              I am passionate about coding — I could skip meals, but I can’t
-              skip a day of writing code. Every day brings new lessons and
-              discoveries, fueling my drive to learn and create.
-            </p>
+            <p className="max-w-[500px] mb-9 text-white/80">{description}</p>
             {/* Button and media Socials  */}
             <div className="flex flex-col xl:flex-row items-center gap-8">
               <Button
+                onClick={handleDownloadCV}
                 variant="outline"
                 size="lg"
                 className="uppercase flex items-center gap-2"
@@ -48,7 +106,12 @@ const Home = () => {
         </div>
       </div>
 
-      <Stats />
+      <Stats
+        numCommit={numberOfCodeCommits}
+        numProjects={numberOfProjectsCompleted}
+        numTechnologies={numberOfTechnologiesUsed}
+        numYoE={yearOfExperience}
+      />
     </section>
   );
 };
