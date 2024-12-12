@@ -38,7 +38,7 @@ export default axiosInstance;
 
 export const publicApi = axios.create({
   // baseURL: `${process.env.NEXT_PUBLIC_API_LOCAL_URL}:${process.env.PORT}/api/${process.env.VERSION}/`,
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}:3000/api/v1/`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/`,
   timeout: 5000, // Timeout cho mỗi request
   headers: {
     'Content-Type': 'application/json',
