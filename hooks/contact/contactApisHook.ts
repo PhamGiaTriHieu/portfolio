@@ -5,9 +5,9 @@ import {AxiosResponse} from 'axios';
 export const sendMailForWork = async (
   url: string,
   data: IFormSubmit
-): Promise<any> => {
+): Promise<unknown> => {
   try {
-    const response = await publicApi.post<AxiosResponse<any>>(url, data);
+    const response = await publicApi.post<AxiosResponse<unknown>>(url, data);
     return response;
   } catch (error) {
     throw error;
