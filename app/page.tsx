@@ -24,7 +24,7 @@ const Home = () => {
         const data = await response.json();
 
         if (data.success) {
-          window.location.href = 'https://phamgiatrihieu.io.vn';
+          window.location.replace('https://phamgiatrihieu.io.vn');
         }
       } catch (error) {
         console.error('Error:', error);
