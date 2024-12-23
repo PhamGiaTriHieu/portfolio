@@ -15,6 +15,25 @@ import {toast} from 'react-toastify';
 const Home = () => {
   const [homeDetail, setHomeDetail] = useState<IHomeGeneral>();
 
+  // Navigate phamgiatrihieu.io.vn domain
+  useEffect(() => {
+    const checkUrl = async () => {
+      try {
+        const response = await fetch('/api/check-url');
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.location.replace('https://phamgiatrihieu.io.vn');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    checkUrl();
+  }, []);
+
   useEffect(() => {
     fetchHomeDetail();
   }, []);

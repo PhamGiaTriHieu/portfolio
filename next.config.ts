@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     PORT: process.env.NODE_ENV === 'development' ? '6868' : '3000',
     VERSION: 'v1',
   },
+  output: 'standalone',
   reactStrictMode: false,
 };
 
