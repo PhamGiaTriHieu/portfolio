@@ -15,6 +15,21 @@ const nextConfig: NextConfig = {
   },
   output: 'standalone',
   reactStrictMode: false,
+  async redirects() {
+    return [
+      {
+        source: '/:path*', // Matches all routes
+        has: [
+          {
+            type: 'host',
+            value: 'myportfolio296.netlify.app', // subdomain
+          },
+        ],
+        destination: 'https://www.phamgiatrihieu.io.vn/:path*', //My primary domain
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
 };
 
 export default nextConfig;
