@@ -21,7 +21,8 @@ const nextConfig: NextConfig = {
         source: '/:path*', // Matches all routes
         has: [
           {
-            type: 'host',
+            type: 'header',
+            key: 'host',
             value: 'myportfolio296.netlify.app', // subdomain
           },
         ],
